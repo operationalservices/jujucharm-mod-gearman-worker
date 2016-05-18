@@ -1,0 +1,32 @@
+#!/bin/bash
+# Here do anything needed to install the service
+# i.e. apt-get install -y foo  or  bzr branch http://myserver/mycode /srv/webroot
+# Make sure this hook exits cleanly and is idempotent, common problems here are
+# failing to account for a debconf question on a dependency, or trying to pull
+# from github without installing git first.
+
+$repofile = /etc/apt/sources.list.d/mod-gearman.list
+
+set -e
+juju-log "Adding Mod-Gearman Repo GPG Key"
+wget -O - http://labs.consol.de/repo/stable/RPM-GPG-KEY | sudo apt-key add -
+juju-log "Adding Mod-Gearman Repository"
+if [ ! -e ${repofile} ] ; then
+	echo 'deb http://labs.consol.de/repo/stable/ubuntu trusty main' > ${repofile}
+fi
+apt-get update
+juju-log "Installing Mod-Gearman"
+apt-get install -y mod-gearman-worker nagios-nrpe-plugin nagios-plugin-check-multi
+apt-get purge -y nagios3 nagios3-core nagios3-common nagios3-cgi
+apt-get autoremove -y
+#./hooks/create-config
+if [ ! -d /usr/share/mod-gearman ] ; then
+	mkdir -p /usr/share/mod-gearman
+fi
+cp ./files/mod_gearman_p1.pl /usr/share/mod-gearman
+chmod +x /usr/share/mod-gearman/mod_gearman_p1.pl
+if [ ! -e /usr/lib/x86_64-linux-gnu/libgearman.so.6 ] ; then
+	ln -s /usr/lib/x86_64-linux-gnu/libgearman.so.7 /usr/lib/x86_64-linux-gnu/libgearman.so.6
+fi
+#service mod-gearman-worker restart
+#status-set active

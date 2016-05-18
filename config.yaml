@@ -1,0 +1,47 @@
+options:
+  gearman-server:
+    default: ""
+    description: | 
+      IP and Port address of the gearman server
+      Example: 192.168.1.100:4730
+    type: string
+  debug:
+    default: False
+    description: If True mod-gearman worker runs in debug mode.
+    type: boolean
+  eventhandler:
+    default: False
+    description: Defines if the module should distribute execution of eventhandlers. 
+    type: boolean
+  hosts:
+    default: False
+    description: Defines if the module should distribute execution of host checks.
+    type: boolean
+  services:
+    default: False
+    description: Defines if the module should distribute execution of service checks.
+    type: boolean
+  hostgroups:
+    default: ""
+    description: Comma separated list of hostgroups which are checked by this mod-gearman-worker
+    type: string
+  servicegroups:
+    default: ""
+    description: Comma separated list of servicegroups which are checked by this mod-gearman-worker
+    type : string
+  encryption: 
+    default: True
+    description: If True the connection between mod-gearman worker and gearman server is encrypted
+    type: boolean
+  key:
+    default: "mysecret"
+    description: Encryption key for the connection between mod-gearman worker and gearman server. Note that the key must be identical on both systems!
+    type: string
+  min-worker:
+    default: 10
+    description: Minimum count of started worker
+    type: int
+  max-worker:
+    default: 100
+    description: Maximum count of started worker
+    type: int
