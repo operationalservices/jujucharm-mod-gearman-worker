@@ -17,8 +17,14 @@ This charm is tested with Ubuntu 14.04 (trusty).
 
 This is a subordinate salt minion charm.
 
+Get this charm:
+
+    mkdir -p ~/charms/trusty
+    cd ~/charms/trusty
+    git clone https://github.com/operationalservices/jujucharm-mod-gearman-worker.git
+
 Deploy the service:
 
-    juju deploy mod-gearman-worker
+    juju deploy local:mod-gearman-worker --repository ~/charms
     juju set mod-gearman-worker gearman-server="<IP of the gearman server>"
     juju set mod-gearman-worker hostgroups="group1,group2"
